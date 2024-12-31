@@ -21,13 +21,13 @@ pipeline {
             steps {
                 echo 'Cleaning, verifying, and running SonarQube analysis...'
                 sh '''
-                # Add Maven to the PATH
-                export PATH=$MAVEN_PATH:$PATH
-                mvn clean verify sonar:sonar \
-                  -Dsonar.projectKey=newprojectbackend \
-                  -Dsonar.projectName='newprojectbackend' \
-                  -Dsonar.host.url=http://localhost:9000 \
-                  -Dsonar.token=$SONAR_TOKEN
+                    # Add Maven to the PATH
+                    export PATH=$MAVEN_PATH:$PATH
+                    mvn clean verify sonar:sonar -X \
+                      -Dsonar.projectKey=newprojectbackend \
+                      -Dsonar.projectName='newprojectbackend' \
+                      -Dsonar.host.url=http://localhost:9000 \
+                      -Dsonar.token=$SONAR_TOKEN
                 '''
             }
         }
