@@ -7,6 +7,7 @@ pipeline {
 
     environment {
         SONAR_TOKEN = credentials('sonar-token')  // Use the SonarQube token stored in Jenkins credentials
+        MAVEN_PATH = '/Users/ariv/Downloads/apache-maven-3.9.9/bin'  // Set your Maven path here
     }
 
     stages {
@@ -20,6 +21,7 @@ pipeline {
             steps {
                 echo 'Cleaning, verifying, and running SonarQube analysis...'
                 sh '''
+                export PATH=$MAVEN_PATH:$PATH  // Add Maven to the PATH
                 mvn clean verify sonar:sonar \
                   -Dsonar.projectKey=newprojectbackend \
                   -Dsonar.projectName='newprojectbackend' \
