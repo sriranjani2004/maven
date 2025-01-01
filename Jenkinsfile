@@ -2,13 +2,12 @@ pipeline {
     agent any
 
     tools {
-        maven 'sonarmaven'  // Replace with the actual name of the Maven tool in Jenkins
+        maven 'sonarmaven'  // Ensure this is the correct Maven installation name in Jenkins
     }
 
     environment {
-        SONAR_TOKEN = credentials('sonar-token')  // Use the SonarQube token stored in Jenkins credentials
-        MAVEN_PATH = '/usr/local/apache-maven-3.9.9'  // Set your Maven path here
-        JAVA_HOME = '/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home'  // Add JAVA_HOME
+        SONAR_TOKEN = credentials('sonar-token')  // Ensure this is the correct credential ID in Jenkins
+        MAVEN_PATH = '/Users/ariv/Downloads/apache-maven-3.9.9/bin'  // Ensure this is the correct Maven path
     }
 
     stages {
@@ -22,11 +21,10 @@ pipeline {
             steps {
                 echo 'Cleaning, verifying, and running SonarQube analysis...'
                 sh '''
-                    # Add Maven to the PATH
+                    # Ensure Maven is in the PATH
                     export PATH=$MAVEN_PATH:$PATH
-                    export JAVA_HOME=$JAVA_HOME  # Corrected comment
                     mvn clean verify sonar:sonar -X \
-                      -Dsonar.projectKey=mavenproject \
+                      -Dsonar.projectKey=newprojectbackend \
                       -Dsonar.projectName='newprojectbackend' \
                       -Dsonar.host.url=http://localhost:9000 \
                       -Dsonar.token=$SONAR_TOKEN
