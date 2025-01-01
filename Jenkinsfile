@@ -24,7 +24,7 @@ pipeline {
                     # Add Maven to the PATH
                     export PATH=$MAVEN_PATH:$PATH
                     mvn clean verify sonar:sonar -X \
-                      -Dsonar.projectKey=newprojectbackend \
+                      -Dsonar.projectKey=mavenproject\
                       -Dsonar.projectName='newprojectbackend' \
                       -Dsonar.host.url=http://localhost:9000 \
                       -Dsonar.token=$SONAR_TOKEN
