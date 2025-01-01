@@ -2,34 +2,65 @@ pipeline {
     agent any
 
     tools {
-        maven 'sonarmaven'  // Ensure this is the correct Maven installation name in Jenkins
+        maven 'sonarmaven'
     }
 
     environment {
-        SONAR_TOKEN = 'sqp_205caef1ccadb6cf948301a2822e6455ca3cf300'  // Updated with the new token
-        MAVEN_PATH = '/usr/local/apache-maven-3.9.9/bin'  // Update with the correct Maven path from the 'where mvn' output
-        JAVA_HOME = '/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home'  // Set JAVA_HOME here
-        PATH = "$JAVA_HOME/bin:$MAVEN_PATH:$PATH"  // Add Maven and JAVA_HOME to the PATH
+        MAVEN_PATH = '/usr/local/apache-maven-3.9.9/bin/mvn'
+        SONAR_TOKEN = credentials('sonar-token')
     }
 
     stages {
         stage('Checkout') {
             steps {
-                checkout scm  // Checkout the source code from your repository
+                checkout scm
             }
         }
 
-        stage('Clean, Verify, and SonarQube Analysis') {
+        stage('Clean target folder') {
             steps {
-                echo 'Cleaning, verifying, and running SonarQube analysis...'
+                echo 'Cleaning target directory...'
                 sh '''
-                    # Ensure Maven is in the PATH
-                    export PATH=$MAVEN_PATH:$PATH
-                    mvn clean verify sonar:sonar -X \
-                      -Dsonar.projectKey=new1 \
-                      -Dsonar.projectName='new1' \
-                      -Dsonar.host.url=http://localhost:9000 \
-                      -Dsonar.token=$SONAR_TOKEN
+                export PATH=$MAVEN_PATH:$PATH
+                mvn clean
+                '''
+            }
+        }
+
+        stage('Test') {
+            steps {
+                echo 'Testing the project...'
+                sh '''
+                export PATH=$MAVEN_PATH:$PATH
+                mvn test
+                '''
+            }
+        }
+
+        stage('Package') {
+            steps {
+                echo 'Packaging the compiled code...'
+                sh '''
+                export PATH=$MAVEN_PATH:$PATH
+                mvn package
+                '''
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                echo 'Running SonarQube analysis...'
+                sh '''
+                export PATH=$MAVEN_PATH:$PATH
+                mvn sonar:sonar \
+                  -Dsonar.projectKey=SQ-Assessment2 \
+                  -Dsonar.sources=src/main/java \
+                  -Dsonar.tests=src/test/java \
+                  -Dsonar.java.binaries=target/classes \
+                  -Dsonar.host.url=http://localhost:9000 \
+                  -Dsonar.token=$SONAR_TOKEN \
+                  -Dsonar.duplications.hashtable=200000 \
+                  -Dsonar.duplications=always
                 '''
             }
         }
