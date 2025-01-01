@@ -7,7 +7,7 @@ pipeline {
 
     environment {
         SONAR_TOKEN = credentials('sonar-token')  // Use the SonarQube token stored in Jenkins credentials
-        MAVEN_PATH = '/Users/ariv/Downloads/apache-maven-3.9.9/bin'  // Set your Maven path here
+        MAVEN_PATH = '/usr/local/apache-maven-3.9.9'  // Set your Maven path here
     }
 
     stages {
