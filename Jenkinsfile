@@ -3,11 +3,13 @@ pipeline {
 
     tools {
         maven 'sonarmaven'
+        jdk 'JDK 17'  // Ensure that JDK 17 is configured in Jenkins tools
     }
 
     environment {
-        MAVEN_PATH = '/usr/local/apache-maven-3.9.9/bin/mvn'
-        SONAR_TOKEN = credentials('sonar-token')
+        MAVEN_PATH = '/usr/local/apache-maven-3.9.9/bin'
+        JAVA_HOME = '/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home'  // Set the correct JAVA_HOME path
+        SONAR_TOKEN = credentials('sonarqube-token')
     }
 
     stages {
@@ -21,7 +23,8 @@ pipeline {
             steps {
                 echo 'Cleaning target directory...'
                 sh '''
-                export PATH=$MAVEN_PATH:$PATH
+                export JAVA_HOME=$JAVA_HOME
+                export PATH=$MAVEN_PATH:$JAVA_HOME/bin:$PATH
                 mvn clean
                 '''
             }
@@ -31,7 +34,8 @@ pipeline {
             steps {
                 echo 'Testing the project...'
                 sh '''
-                export PATH=$MAVEN_PATH:$PATH
+                export JAVA_HOME=$JAVA_HOME
+                export PATH=$MAVEN_PATH:$JAVA_HOME/bin:$PATH
                 mvn test
                 '''
             }
@@ -41,7 +45,8 @@ pipeline {
             steps {
                 echo 'Packaging the compiled code...'
                 sh '''
-                export PATH=$MAVEN_PATH:$PATH
+                export JAVA_HOME=$JAVA_HOME
+                export PATH=$MAVEN_PATH:$JAVA_HOME/bin:$PATH
                 mvn package
                 '''
             }
@@ -51,16 +56,13 @@ pipeline {
             steps {
                 echo 'Running SonarQube analysis...'
                 sh '''
-                export PATH=$MAVEN_PATH:$PATH
+                export JAVA_HOME=$JAVA_HOME
+                export PATH=$MAVEN_PATH:$JAVA_HOME/bin:$PATH
                 mvn sonar:sonar \
                   -Dsonar.projectKey=SQ-Assessment2 \
-                  -Dsonar.sources=src/main/java \
-                  -Dsonar.tests=src/test/java \
-                  -Dsonar.java.binaries=target/classes \
+                  -Dsonar.projectName='SQ-Assessment2' \
                   -Dsonar.host.url=http://localhost:9000 \
-                  -Dsonar.token=$SONAR_TOKEN \
-                  -Dsonar.duplications.hashtable=200000 \
-                  -Dsonar.duplications=always
+                  -Dsonar.token=$SONAR_TOKEN
                 '''
             }
         }
