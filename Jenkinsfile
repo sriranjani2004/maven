@@ -7,9 +7,9 @@ pipeline {
 
     environment {
         SONAR_TOKEN = credentials('sonar-token')  // Ensure this is the correct credential ID in Jenkins
-        MAVEN_PATH = '/Users/ariv/Downloads/apache-maven-3.9.9/bin'  // Ensure this is the correct Maven path
+        MAVEN_PATH = '/opt/maven/bin'  // Ensure this is the correct Maven path (update if needed)
         JAVA_HOME = '/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home'  // Set JAVA_HOME here
-        PATH = "$JAVA_HOME/bin:$PATH"  // Make sure JAVA_HOME is in the PATH
+        PATH = "$JAVA_HOME/bin:$MAVEN_PATH:$PATH"  // Add Maven and JAVA_HOME to the PATH
     }
 
     stages {
