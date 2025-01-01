@@ -8,6 +8,8 @@ pipeline {
     environment {
         SONAR_TOKEN = credentials('sonar-token')  // Ensure this is the correct credential ID in Jenkins
         MAVEN_PATH = '/Users/ariv/Downloads/apache-maven-3.9.9/bin'  // Ensure this is the correct Maven path
+        JAVA_HOME = '/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home'  // Set JAVA_HOME here
+        PATH = "$JAVA_HOME/bin:$PATH"  // Make sure JAVA_HOME is in the PATH
     }
 
     stages {
@@ -25,7 +27,7 @@ pipeline {
                     export PATH=$MAVEN_PATH:$PATH
                     mvn clean verify sonar:sonar -X \
                       -Dsonar.projectKey=newprojectbackend \
-                      -Dsonar.projectName='newprojectbackend' \
+                      -Dsonar.projectName=newprojectbackend \
                       -Dsonar.host.url=http://localhost:9000 \
                       -Dsonar.token=$SONAR_TOKEN
                 '''
