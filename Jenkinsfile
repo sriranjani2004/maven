@@ -9,7 +9,7 @@ pipeline {
     environment {
         MAVEN_PATH = '/usr/local/apache-maven-3.9.9/bin'
         JAVA_HOME = '/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home'  // Set the correct JAVA_HOME path
-        SONAR_TOKEN = credentials('sonarqube-token')
+        SONAR_TOKEN = credentials('sonar-token')
     }
 
     stages {
