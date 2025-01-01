@@ -9,7 +9,7 @@ pipeline {
     environment {
         MAVEN_PATH = '/usr/local/apache-maven-3.9.9/bin'
         JAVA_HOME = '/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home'  // Set the correct JAVA_HOME path
-        SONAR_TOKEN = credentials('sonar-token')
+        SONAR_TOKEN = credentials('sonar-token')  // Use Jenkins credentials for the token
     }
 
     stages {
@@ -23,8 +23,6 @@ pipeline {
             steps {
                 echo 'Cleaning target directory...'
                 sh '''
-                export JAVA_HOME=$JAVA_HOME
-                export PATH=$MAVEN_PATH:$JAVA_HOME/bin:$PATH
                 mvn clean
                 '''
             }
@@ -34,8 +32,6 @@ pipeline {
             steps {
                 echo 'Testing the project...'
                 sh '''
-                export JAVA_HOME=$JAVA_HOME
-                export PATH=$MAVEN_PATH:$JAVA_HOME/bin:$PATH
                 mvn test
                 '''
             }
@@ -45,8 +41,6 @@ pipeline {
             steps {
                 echo 'Packaging the compiled code...'
                 sh '''
-                export JAVA_HOME=$JAVA_HOME
-                export PATH=$MAVEN_PATH:$JAVA_HOME/bin:$PATH
                 mvn package
                 '''
             }
@@ -56,8 +50,6 @@ pipeline {
             steps {
                 echo 'Running SonarQube analysis...'
                 sh '''
-                export JAVA_HOME=$JAVA_HOME
-                export PATH=$MAVEN_PATH:$JAVA_HOME/bin:$PATH
                 mvn sonar:sonar \
                   -Dsonar.projectKey=SQ-Assessment2 \
                   -Dsonar.projectName='SQ-Assessment2' \
