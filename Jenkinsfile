@@ -24,7 +24,7 @@ pipeline {
                 sh '''
                     # Add Maven to the PATH
                     export PATH=$MAVEN_PATH:$PATH
-                    export JAVA_HOME=$JAVA_HOME  // Add JAVA_HOME to the environment
+                    export JAVA_HOME=$JAVA_HOME  # Corrected comment
                     mvn clean verify sonar:sonar -X \
                       -Dsonar.projectKey=mavenproject \
                       -Dsonar.projectName='newprojectbackend' \
