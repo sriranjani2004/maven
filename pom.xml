@@ -73,16 +73,10 @@
                     </execution>
                     <execution>
                         <id>report</id>
-                        <phase>test</phase>
+                        <phase>verify</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
-                        <configuration>
-                            <reports>
-                                <xml>true</xml>
-                                <html>true</html>
-                            </reports>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
