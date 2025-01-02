@@ -16,6 +16,7 @@
         <sonar.sourceEncoding>UTF-8</sonar.sourceEncoding>
         <sonar.duplications.hashtable>200000</sonar.duplications.hashtable>
         <sonar.duplications>always</sonar.duplications>
+        <sonar.python.coverage.reportPaths>target/site/jacoco/jacoco.xml</sonar.python.coverage.reportPaths>
     </properties>
 
     <dependencies>
@@ -76,6 +77,12 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <reports>
+                                <xml>true</xml>
+                                <html>true</html>
+                            </reports>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
