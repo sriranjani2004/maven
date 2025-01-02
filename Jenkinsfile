@@ -30,9 +30,9 @@ pipeline {
 
         stage('Test') {
             steps {
-                echo 'Testing the project...'
+                echo 'Testing the project and generating JaCoCo report...'
                 sh '''
-                mvn test
+                mvn test jacoco:report
                 '''
             }
         }
@@ -56,6 +56,13 @@ pipeline {
                   -Dsonar.host.url=http://localhost:9000 \
                   -Dsonar.token=$SONAR_TOKEN
                 '''
+            }
+        }
+        
+        stage('Archive JaCoCo Reports') {
+            steps {
+                echo 'Archiving JaCoCo report...'
+                archiveArtifacts artifacts: 'target/site/jacoco/index.html', allowEmptyArchive: true
             }
         }
     }
